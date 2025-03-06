@@ -1,4 +1,4 @@
-# GitHub Stars to PostHog via Hookdeck
+# GitHub Stars ⭐ to PostHog 🦔 via Hookdeck 🪝
 
 A TypeScript application that sets up [GitHub stars webhooks](https://docs.github.com/en/webhooks/webhook-events-and-payloads#star) and sends them via [Hookdeck](https://hookdeck.com?ref=github-github-stars-to-posthog). Hookdeck transforms the webhook payload into a [PostHog](https://posthog.com) capture event payload and sends the data to the PostHog API.
 
