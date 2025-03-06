@@ -1,0 +1,43 @@
+{
+  "name": "github-stars-to-posthog",
+  "version": "0.1.0",
+  "description": "A project to track GitHub stars in PostHog",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "prestart": "npm run build-transform",
+    "start": "node --experimental-strip-types src/index.ts",
+    "dev": "node --experimental-strip-types src/index.ts",
+    "test": "jest",
+    "lint": "eslint . --ext .ts",
+    "build-transform": "rimraf dist/transform.js && tsc src/transform.ts --outDir dist --module commonjs --target es2022"
+  },
+  "keywords": [
+    "github",
+    "posthog",
+    "analytics"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@eslint/eslint-plugin": "^9.0.0",
+    "@eslint/js": "^9.0.0",
+    "@types/jest": "^29.5.11",
+    "@types/node": "^20.10.6",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^9.0.0",
+    "jest": "^29.7.0",
+    "rimraf": "^5.0.5",
+    "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1"
+  },
+  "engines": {
+    "node": ">=20.6.0"
+  }
+}
