@@ -30,6 +30,16 @@ Run the application directly with Node.js native TypeScript support:
 npm run start
 ```
 
+## Screenshots
+
+### Event in Hookdeck
+
+![Event in Hookdeck](docs/hookdeck-event.png)
+
+### Event in PostHog
+
+![Event in PostHog](docs/posthog-event.png)
+
 ## License
 
 MIT
