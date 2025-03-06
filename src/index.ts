@@ -26,6 +26,8 @@ if (
   process.exit(1);
 }
 
+const safeGitHubRepoName = GITHUB_REPO.replace("/", "-");
+
 const hookdeckHeaders = {
   Authorization: `Bearer ${HOOKDECK_API_KEY}`,
   "Content-Type": "application/json",
@@ -52,7 +54,7 @@ async function createSource(): Promise<HookdeckSource> {
         method: "PUT",
         headers: hookdeckHeaders,
         body: JSON.stringify({
-          name: "github-stars-source",
+          name: `gh-stars-src-${safeGitHubRepoName}`,
           type: "GITHUB",
           config: {
             auth: {
@@ -84,13 +86,14 @@ async function createDestination(): Promise<string> {
   try {
     const posthogUrl = `${POSTHOG_HOST}/i/v0/e/`; // Include API key in URL
 
+    // Could reuse the destinations
     const response = await fetch(
       "https://api.hookdeck.com/2025-01-01/destinations",
       {
         method: "PUT",
         headers: hookdeckHeaders,
         body: JSON.stringify({
-          name: "posthog-events",
+          name: `posthog-${safeGitHubRepoName}`,
           config: {
             url: posthogUrl,
           },
@@ -133,7 +136,7 @@ async function createConnection(
         method: "PUT",
         headers: hookdeckHeaders,
         body: JSON.stringify({
-          name: "github-stars-to-posthog",
+          name: `gh-stars-conn-${safeGitHubRepoName}`,
           source_id: sourceId,
           destination_id: destinationId,
           rules: [
@@ -204,6 +207,7 @@ async function getExistingWebhook(): Promise<GitHubWebhook | null> {
     const webhooks = (await response.json()) as GitHubWebhook[];
 
     // Find the first webhook for the 'star' event
+    // Note that this just checks for any webhook registered for the 'star' event
     return (
       webhooks.find(
         (webhook) => webhook.events.includes("star") && webhook.name === "web"
@@ -217,7 +221,6 @@ async function getExistingWebhook(): Promise<GitHubWebhook | null> {
 
 async function createGitHubWebhook(sourceUrl: string) {
   try {
-    // Check if a webhook already exists
     const existingWebhook = await getExistingWebhook();
 
     const webhookPayload = {
